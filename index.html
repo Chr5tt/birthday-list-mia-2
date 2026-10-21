@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Birthday List Mia 2</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@600;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+  <section id="intro">
+    <div class="hud px"><span>MIA 2</span><span>XP<span class="bar"><i id="xp"></i></span></span></div>
+    <div class="lock">🔒</div>
+    <div id="decode" class="px">H4PPY B1RTHD4Y</div>
+    <div class="px small">MASUKKAN SANDI 4 ANGKA</div>
+    <div class="dials" id="dials"></div>
+    <button class="btn px" id="go">BUKA</button>
+    <div id="msg" class="px">Petunjuk: tahun sekarang</div>
+  </section>
+
+  <header>
+    <h1 class="px">BIRTHDAY LIST</h1>
+    <p class="sub" id="sub"></p>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Cari nama...">
+      <select id="mon">
+        <option value="">Semua bulan</option>
+      </select>
+      <button class="btn" id="mute" aria-pressed="false">🔊 Suara</button>
+    </div>
+    <div class="next" id="next"></div>
+  </header>
+  <main class="grid" id="grid"></main>
+
+  <footer class="foot">
+    <div class="sign">
+      <p>Ada saran dan kritik atau perubahan data?</p>
+      <button class="btn px" id="fbBtn">Kirim Ulasan</button>
+    </div>
+  </footer>
+
+  <div id="modal">
+    <div class="box" id="box"></div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/script.js"></script>
+</body>
+
+</html>

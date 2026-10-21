@@ -1,0 +1,874 @@
+:root {
+  --bg: #FFF4E6;
+  --ink: #2B2D42;
+  --card: #FFFFFF;
+  --c0: #FF8A80;
+  --c1: #7BDFB5;
+  --c2: #FFA45C;
+  --c3: #FFD66B;
+  --c4: #8EC5FF;
+  --sh: #2B2D42;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #2A211C;
+    --ink: #FFF4E6;
+    --card: #3B2E26;
+    --sh: #140E0A;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #2A211C;
+  --ink: #FFF4E6;
+  --card: #3B2E26;
+  --sh: #140E0A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Nunito, system-ui, sans-serif;
+  font-weight: 800;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.px {
+  font-family: "Press Start 2P", monospace;
+  line-height: 1.5;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* INTRO */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 1s cubic-bezier(.7, 0, .2, 1);
+  overflow: hidden;
+}
+
+#intro.open {
+  transform: translateY(-105%);
+}
+
+.star {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--c3);
+  border: 3px solid var(--ink);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-30px) rotate(90deg);
+  }
+}
+
+.hud {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.bar {
+  width: 120px;
+  height: 14px;
+  border: 3px solid var(--ink);
+  background: var(--card);
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--c1);
+  transition: width .4s steps(6);
+}
+
+#decode {
+  font-size: clamp(16px, 4.6vw, 30px);
+  min-height: 2.4em;
+  text-shadow: 4px 4px 0 var(--c0);
+}
+
+.lock {
+  font-size: 54px;
+  animation: bob 1.6s steps(2) infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+#intro.open .lock {
+  animation: none;
+  transform: scale(1.4) rotate(-12deg);
+}
+
+.dials {
+  display: flex;
+  gap: 12px;
+}
+
+.dial {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.dial button {
+  width: 56px;
+  height: 34px;
+  border: 4px solid var(--ink);
+  background: var(--c4);
+  box-shadow: 3px 3px 0 var(--sh);
+  font-size: 14px;
+}
+
+.dial button:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.dial output {
+  width: 56px;
+  height: 70px;
+  border: 4px solid var(--ink);
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+
+.dials.shake {
+  animation: shake .4s;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(-12px);
+  }
+
+  75% {
+    transform: translateX(12px);
+  }
+}
+
+.dials.ok output {
+  background: var(--c1);
+  animation: pop .4s;
+}
+
+@keyframes pop {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+#msg {
+  font-size: 10px;
+  min-height: 1.6em;
+  color: var(--ink);
+}
+
+.conf {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 14px;
+  z-index: 60;
+  animation: fall 2s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+  }
+}
+
+/* MAIN */
+header {
+  padding: 36px 18px 18px;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(18px, 5vw, 34px);
+  margin: 0 0 12px;
+  text-shadow: 4px 4px 0 var(--c2);
+}
+
+.sub {
+  opacity: .8;
+  margin: 0 0 18px;
+}
+
+.tools {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+input[type=search],
+select {
+  font: inherit;
+  padding: 12px 14px;
+  border: 4px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--sh);
+  min-width: 0;
+}
+
+input[type=search] {
+  flex: 1 1 220px;
+}
+
+.next {
+  max-width: 760px;
+  margin: 22px auto 0;
+  padding: 14px 16px;
+  border: 4px solid var(--ink);
+  background: var(--c3);
+  color: #2B2D42;
+  box-shadow: 6px 6px 0 var(--sh);
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.card {
+  background: var(--card);
+  border: 4px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--sh);
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  animation: in .5s forwards;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.card:hover {
+  transform: translate(-3px, -3px) rotate(-1deg);
+  box-shadow: 10px 10px 0 var(--sh);
+}
+
+@keyframes in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ph {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 10px;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: var(--c1);
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 3px solid var(--ink);
+  font-size: 12px;
+  color: #2B2D42;
+}
+
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 40px;
+}
+
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(30, 20, 12, .65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+#modal.show {
+  display: flex;
+}
+
+.box {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  background: var(--card);
+  border: 5px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--sh);
+  padding: 26px 20px 20px;
+  text-align: center;
+  animation: zoom .35s cubic-bezier(.3, 1.6, .5, 1);
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(.6) rotate(-4deg);
+    opacity: 0;
+  }
+}
+
+.box .ph {
+  width: 150px;
+  height: 150px;
+  animation: bob 2s ease-in-out infinite;
+}
+
+.box h2 {
+  margin: 8px 0 4px;
+  font-size: 22px;
+}
+
+.x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 38px;
+  height: 38px;
+  border: 4px solid var(--ink);
+  background: var(--c0);
+  color: #2B2D42;
+  font-size: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.btn {
+  padding: 10px 14px;
+  border: 4px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--sh);
+  text-decoration: none;
+  color: #2B2D42;
+  background: var(--c2);
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.btn.ig {
+  background: var(--c0);
+}
+
+.btn.tt {
+  background: var(--c4);
+}
+
+.btn.wa {
+  background: var(--c1);
+}
+
+.btn.snd {
+  background: var(--c1);
+}
+
+.eq {
+  display: inline-flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 16px;
+}
+
+.eq i {
+  width: 4px;
+  height: 4px;
+  background: #2B2D42;
+}
+
+.eq.on i {
+  animation: eq .5s ease-in-out infinite alternate;
+}
+
+.eq.on i:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.eq.on i:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes eq {
+  to {
+    height: 16px;
+  }
+}
+
+.info {
+  background: var(--bg);
+  border: 3px dashed var(--ink);
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .01s !important;
+  }
+}
+
+.small {
+  font-size: 10px;
+}
+
+.next-name {
+  font-size: 18px;
+}
+
+#go {
+  font-size: 12px;
+}
+
+/* Elemen kayu svg*/
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.010 0.42' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30  0 0 0 0 .17  0 0 0 0 .07  0 0 0 1.5 -.62'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url%28%23g%29'/%3E%3C/svg%3E");
+  --wood: #D9A66B;
+  --wood-d: #8B5A2B;
+  --wood-l: #EBC795;
+  --on-wood: #2B2D42;
+  --floor: #EAD2AE;
+  --seam: rgba(110, 70, 30, .28);
+  --nail: #5B3A1C;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wood: #6B4529;
+    --wood-d: #4A2F1A;
+    --wood-l: #7C5232;
+    --on-wood: #FFF4E6;
+    --floor: #3B2A20;
+    --seam: rgba(0, 0, 0, .35);
+    --nail: #1E120A;
+  }
+}
+
+:root[data-theme="dark"] {
+  --wood: #6B4529;
+  --wood-d: #4A2F1A;
+  --wood-l: #7C5232;
+  --on-wood: #FFF4E6;
+  --floor: #3B2A20;
+  --seam: rgba(0, 0, 0, .35);
+  --nail: #1E120A;
+}
+
+/* Lantai papan kayu */
+body,
+#intro {
+  background-color: var(--floor);
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 177px, var(--seam) 177px 180px),
+    var(--grain);
+}
+
+/* Papan nama tergantung */
+h1 {
+  position: relative;
+  display: inline-block;
+  margin: 38px 12px 14px;
+  padding: 18px 26px;
+  color: #FFF4E6;
+  background: var(--grain), linear-gradient(var(--wood), var(--wood-d));
+  border: 5px solid var(--wood-d);
+  box-shadow: 5px 6px 0 var(--sh), inset 0 0 0 3px rgba(255, 255, 255, .12);
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, .4);
+  transform-origin: 50% -38px;
+  animation: sway 5s ease-in-out infinite;
+}
+
+h1::before,
+h1::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  width: 5px;
+  height: 36px;
+  background: repeating-linear-gradient(0deg, #E9D8B0 0 4px, #B89A66 4px 7px);
+}
+
+h1::before {
+  left: 16%;
+}
+
+h1::after {
+  right: 16%;
+}
+
+@keyframes sway {
+
+  0%,
+  100% {
+    transform: rotate(-1.2deg);
+  }
+
+  50% {
+    transform: rotate(1.2deg);
+  }
+}
+
+.sub {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--card);
+  border: 3px solid var(--wood-d);
+}
+
+/* Pencarian dan filter */
+input[type=search],
+select {
+  border-color: var(--wood-d);
+}
+
+/* Banner ulang tahun terdekat */
+.next {
+  color: var(--on-wood);
+  background: var(--grain), linear-gradient(var(--wood-l), var(--wood));
+  border-color: var(--wood-d);
+}
+
+/* Kartu */
+.card {
+  position: relative;
+  border: 9px solid transparent;
+  padding: 12px;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    var(--grain) border-box,
+    linear-gradient(135deg, var(--wood-l), var(--wood) 55%, var(--wood-d)) border-box;
+  box-shadow: 4px 6px 0 var(--sh);
+}
+
+.card::before,
+.card::after,
+.box::before,
+.box::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #E8C9A0, var(--nail));
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .4);
+}
+
+.card::before,
+.box::before {
+  left: -6px;
+}
+
+.card::after,
+.box::after {
+  right: -6px;
+}
+
+/* Foto dalam bingkai kayu */
+.ph {
+  border: 6px solid var(--wood-d);
+  box-shadow: 0 0 0 3px var(--wood-l), 3px 5px 0 3px var(--sh);
+}
+
+/* Tombol umum berwarna kayu. Tombol sosial tetap berwarna. */
+.btn {
+  background: var(--grain), linear-gradient(var(--wood-l), var(--wood));
+  border-color: var(--wood-d);
+  color: var(--on-wood);
+}
+
+.btn.ig {
+  background: var(--c0);
+}
+
+.btn.tt {
+  background: var(--c4);
+}
+
+.btn.wa {
+  background: var(--c1);
+}
+
+.btn.snd {
+  background: var(--c1);
+}
+
+.btn.ig,
+.btn.tt,
+.btn.wa,
+.btn.snd {
+  color: #2B2D42;
+}
+
+/* Kotak detail: papan kayu */
+.box {
+  border: 12px solid transparent;
+  padding: 18px 14px 14px;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    var(--grain) border-box,
+    linear-gradient(135deg, var(--wood-l), var(--wood) 55%, var(--wood-d)) border-box;
+  box-shadow: 8px 10px 0 var(--sh);
+}
+
+.box::before,
+.box::after {
+  top: -9px;
+  width: 9px;
+  height: 9px;
+}
+
+.box::before {
+  left: -9px;
+}
+
+.box::after {
+  right: -9px;
+}
+
+.x {
+  top: 6px;
+  right: 6px;
+}
+
+.info {
+  border-color: var(--wood-d);
+}
+
+/* Intro: dial di atas papan kayu */
+.dials {
+  padding: 14px;
+  background: var(--grain), linear-gradient(var(--wood-l), var(--wood));
+  border: 6px solid var(--wood-d);
+  box-shadow: 6px 8px 0 var(--sh);
+}
+
+.dial button {
+  background: var(--grain), linear-gradient(var(--wood), var(--wood-d));
+  border-color: var(--wood-d);
+  color: #FFF4E6;
+}
+
+.dial output {
+  border-color: var(--wood-d);
+}
+
+/* Bintang dekorasi berada di belakang isi intro */
+#intro> :not(.star):not(.hud) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Bagian ulasan di akhir halaman */
+.foot {
+  padding: 0 18px 48px;
+  text-align: center;
+}
+
+.sign {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  padding: 20px 28px 24px;
+  color: #FFF4E6;
+  background: var(--grain), linear-gradient(var(--wood), var(--wood-d));
+  border: 5px solid var(--wood-d);
+  box-shadow: 5px 6px 0 var(--sh), inset 0 0 0 3px rgba(255, 255, 255, .12);
+}
+
+.sign p {
+  margin: 0 0 14px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, .4);
+}
+
+#fbBtn {
+  background: var(--c3);
+  color: #2B2D42;
+  font-size: 12px;
+}
+
+/* Formulir ulasan */
+.fb-note {
+  margin: 0 0 12px;
+  font-size: 14px;
+  opacity: .85;
+}
+
+.fb {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.fb label,
+.fb-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.fb input,
+.fb textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 4px solid var(--wood-d);
+  box-shadow: 3px 3px 0 var(--sh);
+}
+
+.fb textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.stars {
+  display: flex;
+  gap: 6px;
+}
+
+.stars button {
+  width: 44px;
+  height: 44px;
+  font-size: 24px;
+  line-height: 1;
+  color: #B9A58E;
+  background: var(--card);
+  border: 4px solid var(--wood-d);
+  box-shadow: 3px 3px 0 var(--sh);
+}
+
+.stars button.on {
+  color: #2B2D42;
+  background: var(--c3);
+  animation: pop .3s;
+}
+
+.fb-error {
+  min-height: 1.2em;
+  font-size: 13px;
+  color: #D9483B;
+}
+
+/* Judul dan keterangan di tengah halaman */
+h1,
+.sub {
+  display: block;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sub {
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+/* Kunci scroll */
+html.intro-lock,
+html.intro-lock body {
+  height: 100%;
+  overflow: hidden;
+}
