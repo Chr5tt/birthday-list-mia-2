@@ -25,15 +25,18 @@ const people = PEOPLE.map((raw, index) => {
     year,
     month,
     day,
-    photo: raw.photo || `${words[0]}.${words[1]}.jpg`,
+    // false kalau tanggal belum diisi (misalnya 0000-00-00)
+    hasDate: month >= 1 && month <= 12 && day >= 1 && day <= 31,
+    photo: raw.photo || `${words.slice(0, 2).join(".")}.jpg`,
     links: (raw.links || []).filter((l) => l && l.url),
     color: COLORS[index % COLORS.length],
   };
-}).sort((a, b) => a.month - b.month || a.day - b.day);
+}).sort((a, b) => (b.hasDate - a.hasDate) || a.month - b.month || a.day - b.day);
 
 const initials = (name) => name.split(" ").slice(0, 2).map((w) => w[0]).join("");
 const photoUrl = (p) => CONFIG.photoDir + p.photo;
-const formatDate = (p) => `${p.day} ${MONTHS[p.month - 1]} ${p.year}`;
+const formatDate = (p) => (p.hasDate ? `${p.day} ${MONTHS[p.month - 1]} ${p.year}` : "Tanggal belum diisi");
+const shortDate = (p) => (p.hasDate ? `${p.day} ${MONTHS[p.month - 1].slice(0, 3)}` : "Belum diisi");
 const findPerson = (index) => people.find((p) => p.index === Number(index));
 
 // Warna tombol
@@ -59,7 +62,7 @@ function photoTag(p, extra = "") {
   return `<img class="ph" src="${photoUrl(p)}" data-id="${p.index}" onerror="useFallback(this)" alt="${p.name}" ${extra}>`;
 }
 
-// Hitung sisa hari dan umur dari tanggal lahir.
+// Hitung sisa hari.
 function nextBirthday(p) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -102,7 +105,7 @@ function beep(freq, duration, wave, delay = 0, volume = 0.15) {
   }
 }
 
-// Melodi 8 nada.
+// Melodi 8 nada
 function playTune(p) {
   const scale = [0, 2, 4, 7, 9, 12];
   const waves = ["square", "triangle", "sine", "sawtooth", "triangle"];
@@ -184,7 +187,7 @@ function unlock() {
   setTimeout(() => intro.classList.add("open"), 900);
   setTimeout(() => {
     intro.style.display = "none";
-    document.documentElement.classList.remove("intro-lock");
+    document.documentElement.classList.remove("intro-lock"); // halaman utama boleh di-scroll lagi
   }, 2100);
 }
 
@@ -244,7 +247,7 @@ function renderList() {
       <article class="card" style="animation-delay:${k * 45}ms" data-id="${p.index}">
         ${photoTag(p)}
         <h3>${p.name}</h3>
-        <span class="tag" style="background:${p.color}">🎂 ${p.day} ${MONTHS[p.month - 1].slice(0, 3)}</span>
+        <span class="tag" style="background:${p.color}">🎂 ${shortDate(p)}</span>
       </article>`
       )
       .join("")
@@ -253,8 +256,13 @@ function renderList() {
 
 function renderNextBirthday() {
   const next = people
+    .filter((p) => p.hasDate)
     .map((p) => ({ p, ...nextBirthday(p) }))
     .sort((a, b) => a.days - b.days)[0];
+  if (!next) {
+    $("#next").style.display = "none";
+    return;
+  }
   const when = next.days === 0 ? "hari ini! 🎉" : `${next.days} hari lagi`;
   $("#next").innerHTML = `<span class="px small">ULTAH TERDEKAT</span><br><span class="next-name">${next.p.name}: ${when}</span>`;
   $("#next").onclick = () => openDetail(next.p);
@@ -274,8 +282,11 @@ function linksHtml(p) {
 
 function openDetail(p) {
   const i = people.indexOf(p);
-  const { days, age } = nextBirthday(p);
-  const countdown = days === 0 ? "Ulang tahun hari ini! 🎉" : `${days} hari lagi menuju usia ${age}`;
+  let countdown = "Tanggal lahir belum diisi";
+  if (p.hasDate) {
+    const { days, age } = nextBirthday(p);
+    countdown = days === 0 ? "Ulang tahun hari ini! 🎉" : `${days} hari lagi menuju usia ${age}`;
+  }
 
   box.innerHTML = `
     <button class="x" id="cl" aria-label="Tutup">✕</button>
@@ -305,7 +316,7 @@ function closeDetail() {
   clearTimeout(eqTimer);
 }
 
-/* ---------- Ulasan lewat Media Sosial ---------- */
+/* ---------- Ulasan lewat email ---------- */
 let rating = 0;
 
 function openFeedback() {
@@ -313,12 +324,12 @@ function openFeedback() {
   box.innerHTML = `
     <button class="x" id="cl" aria-label="Tutup">✕</button>
     <h2>Kirim Ulasan</h2>
-    <p class="fb-note">Bisa sampaikan apa saja yaa.</p>
+    <p class="fb-note">Tulis pendapatmu. bisa sampaikan apa saja.</p>
     <form class="fb" id="fbForm" novalidate>
       <label>Nama
         <input type="text" id="fbName" maxlength="60" autocomplete="name" required>
       </label>
-      <div class="fb-label">Penilaian (opsional)</div>
+      <div class="fb-label">Penilaian</div>
       <div class="stars" id="stars">
         ${[1, 2, 3, 4, 5].map((n) => `<button type="button" data-v="${n}" aria-label="${n} bintang">★</button>`).join("")}
       </div>
@@ -356,10 +367,16 @@ function buildFeedback() {
   const email = encodeURIComponent(CONFIG.feedbackEmail).replace("%40", "@");
   const subject = encodeURIComponent(CONFIG.feedbackSubject);
   const phone = CONFIG.feedbackWhatsapp.replace(/\D/g, "");
+  const encodedBody = encodeURIComponent(body);
   return {
     name,
     text,
-    gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${encodeURIComponent(body)}`,
+    // Gmail di browser komputer
+    gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${encodedBody}`,
+    // Aplikasi Gmail di iPhone/iPad
+    gmailApp: `googlegmail:///co?to=${email}&subject=${subject}&body=${encodedBody}`,
+    // Aplikasi email bawaan ponsel (di Android biasanya Gmail)
+    mailto: `mailto:${email}?subject=${subject}&body=${encodedBody}`,
     whatsapp: `https://wa.me/${phone}?text=${encodeURIComponent(CONFIG.feedbackSubject + "\n\n" + body)}`,
   };
 }
@@ -377,7 +394,31 @@ function sendFeedback(via) {
     return;
   }
   $("#fbErr").textContent = "";
-  window.open(via === "gmail" ? mail.gmail : mail.whatsapp, "_blank", "noopener");
+  if (via === "gmail") openGmail(mail);
+  else window.open(mail.whatsapp, "_blank", "noopener");
+}
+
+function navigate(url) {
+  window.location.href = url;
+}
+
+// Di ponsel membuka aplikasi Gmail. Di komputer membuka Gmail di browser.
+function openGmail(mail) {
+  const ua = navigator.userAgent;
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  if (isAndroid) {
+    navigate(mail.mailto);
+  } else if (isIOS) {
+    navigate(mail.gmailApp);
+    // pakai aplikasi email bawaan.
+    setTimeout(() => {
+      if (!document.hidden) navigate(mail.mailto);
+    }, 1200);
+  } else {
+    window.open(mail.gmail, "_blank", "noopener");
+  }
 }
 
 /* ---------- Event ---------- */
@@ -402,11 +443,10 @@ $("#mute").onclick = (e) => {
 };
 
 /* ---------- Mulai ---------- */
+document.documentElement.classList.add("intro-lock"); // kunci scroll selama intro tampil
 buildDials();
 scatterStars();
 fillMonthOptions();
 $("#sub").textContent = `Nǐ hǎo, péngyǒu! artinya ya'ahowu dua.`;
 renderList();
 renderNextBirthday();
-
-document.documentElement.classList.add("intro-lock");

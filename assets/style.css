@@ -354,6 +354,7 @@ input[type=search] {
   padding: 40px;
 }
 
+/* MODAL */
 #modal {
   position: fixed;
   inset: 0;
@@ -518,7 +519,7 @@ input[type=search] {
   font-size: 12px;
 }
 
-/* Elemen kayu svg*/
+/* Elemen kayu */
 :root {
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.010 0.42' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30  0 0 0 0 .17  0 0 0 0 .07  0 0 0 1.5 -.62'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url%28%23g%29'/%3E%3C/svg%3E");
   --wood: #D9A66B;
@@ -626,7 +627,7 @@ select {
   border-color: var(--wood-d);
 }
 
-/* Kartu */
+/* Kartu: kertas dengan bingkai kayu dan paku */
 .card {
   position: relative;
   border: 9px solid transparent;
@@ -751,7 +752,7 @@ select {
   border-color: var(--wood-d);
 }
 
-/* Bintang dekorasi berada di belakang isi intro */
+/* Bintang dekorasi */
 #intro> :not(.star):not(.hud) {
   position: relative;
   z-index: 1;
@@ -851,7 +852,7 @@ select {
   color: #D9483B;
 }
 
-/* Judul dan keterangan di tengah halaman */
+/* Judul dan keterangan selalu tersusun di tengah */
 h1,
 .sub {
   display: block;
@@ -866,9 +867,31 @@ h1,
   margin-bottom: 18px;
 }
 
-/* Kunci scroll */
+/* Kunci scroll halaman selama intro tampil */
 html.intro-lock,
 html.intro-lock body {
   height: 100%;
   overflow: hidden;
+}
+
+/* Dial tetap muat di layar yang sangat sempit */
+@media (max-width: 380px) {
+  .dials {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .dial button,
+  .dial output {
+    width: 46px;
+  }
+
+  .dial button {
+    height: 30px;
+  }
+
+  .dial output {
+    height: 60px;
+    font-size: 22px;
+  }
 }
