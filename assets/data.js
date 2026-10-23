@@ -6,8 +6,8 @@ const wa = (number) => ({ label: "WhatsApp", url: asUrl(number, "https://wa.me/"
 const link = (label, url) => ({ label, url });
 
 const PEOPLE = [
-  { name: "01", date: "0000-00-00", links: [ig("username"), tt("username")] },
-  { name: "02", date: "0000-00-00", links: [ig("username"), tt("username")] },
+  { name: "Setiaman Gulo", date: "2005-09-11", links: [ig("tiaman_11"), tt("Man_GL")] },
+  { name: "Imelda Rensis Wenas Zebua", date: "2005-08-20", links: [ig("rensis_zebua"), tt("username")] },
   { name: "03", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "04", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "05", date: "0000-00-00", links: [ig("username"), tt("username")] },
