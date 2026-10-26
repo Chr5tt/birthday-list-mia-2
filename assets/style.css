@@ -895,3 +895,22 @@ html.intro-lock body {
     font-size: 22px;
   }
 }
+
+/* Perlindungan ringan */
+html {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}

@@ -442,6 +442,12 @@ $("#mute").onclick = (e) => {
   e.currentTarget.setAttribute("aria-pressed", muted);
 };
 
+/* ---------- Perlindungan ringan ---------- */
+const isField = (e) => e.target instanceof Element && e.target.closest("input, textarea");
+document.addEventListener("dragstart", (e) => e.preventDefault());
+document.addEventListener("copy", (e) => { if (!isField(e)) e.preventDefault(); });
+document.addEventListener("cut", (e) => { if (!isField(e)) e.preventDefault(); });
+
 /* ---------- Mulai ---------- */
 document.documentElement.classList.add("intro-lock"); // kunci scroll selama intro tampil
 buildDials();
