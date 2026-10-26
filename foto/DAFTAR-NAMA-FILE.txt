@@ -1,5 +1,0 @@
-Simpan foto (.jpg) di folder ini dengan nama persis seperti berikut.
-Untuk nama file lain, isi kolom photo di assets/data.js.
-
-contoh format:
-"username".jpg  <- username
