@@ -10,7 +10,7 @@ const PEOPLE = [
   { name: "Imelda Rensis Wenas Zebua", date: "2005-08-20", links: [ig("rensis_zebua"), wa("6282213909353")] },
   { name: "Nanda Priscylla Cahya Sandroto", date: "2006-09-16", links: [ig("nndpriscyllaaa_"), wa("6285133235962")] },
   { name: "Eka Putra Aman Waruwu", date: "2005-09-05", links: [ig("ek_w05"), tt("eka_waruwu"), wa("6281927523127")] },
-  { name: "05", date: "0000-00-00", links: [ig("username"), tt("username")] },
+  { name: "Imelda Gulo", date: "2006-05-31", links: [ig("imel_da_gulo"), tt("imelda_gulo"), wa("6285373695164")] },
   { name: "06", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "07", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "08", date: "0000-00-00", links: [ig("username"), tt("username")] },
