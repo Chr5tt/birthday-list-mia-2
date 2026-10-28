@@ -1,10 +1,13 @@
 /* ---------- Konfigurasi ---------- */
 const CONFIG = {
   // Ulasan
-  feedbackEmail: "christianl82660504@gmail.com",
+  feedbackEmail: "chr5tt.dev@gmail.com",
   feedbackWhatsapp: "6285282660504",
   feedbackSubject: "Ulasan Birthday List",
   photoDir: "foto/",
+  // Kalau file tidak ada, suara nada bawaan yang diputar.
+  voiceDir: "suara/",
+  voiceExts: ["mp3", "m4a", "ogg", "opus", "wav"],
   // Sandi
   getCode: () => String(new Date().getFullYear()),
 };
@@ -125,10 +128,68 @@ function playTune(p) {
   return notes.length * step * 1000;
 }
 
-function playForPerson(p) {
+/* ---------- Voice note ---------- */
+const voicePlayer = new Audio();
+const voiceCache = new Map(); // index orang -> alamat file yang berhasil, atau false kalau tidak ada VN
+let voiceToken = 0;
+
+voicePlayer.addEventListener("ended", () => $(".eq")?.classList.remove("on"));
+
+// Elemen dibuka sekali di sini.
+const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+document.addEventListener(
+  "pointerdown",
+  () => {
+    voicePlayer.src = SILENT_WAV;
+    voicePlayer.play().catch(() => {});
+  },
+  { once: true }
+);
+
+function voiceCandidates(p) {
+  if (p.voice) return [CONFIG.voiceDir + p.voice];
+  const base = p.photo.replace(/\.[^.]+$/, "");
+  return CONFIG.voiceExts.map((ext) => `${CONFIG.voiceDir}${base}.${ext}`);
+}
+
+function stopVoice() {
+  voiceToken++;
+  voicePlayer.pause();
+}
+
+// Mengembalikan true kalau VN diputar (atau pemutaran digantikan permintaan yang lebih baru).
+async function playVoice(p, token) {
+  const cached = voiceCache.get(p.index);
+  if (cached === false) return false;
+
+  for (const url of cached ? [cached] : voiceCandidates(p)) {
+    voicePlayer.src = url;
+    try {
+      await voicePlayer.play();
+      if (token !== voiceToken) return true;
+      voiceCache.set(p.index, url);
+      return true;
+    } catch (err) {
+      if (token !== voiceToken) return true;
+      if (err.name === "NotAllowedError") return false; // diblokir browser, bukan file tidak ada
+    }
+  }
+  voiceCache.set(p.index, false);
+  return false;
+}
+
+async function playForPerson(p) {
   if (muted) return;
   clearTimeout(eqTimer);
+  voicePlayer.pause();
+  const token = ++voiceToken;
   $(".eq")?.classList.add("on");
+
+  if (await playVoice(p, token)) return; // VN diputar, equalizer berhenti saat VN selesai
+  if (token !== voiceToken) return;
+
+  // Tidak ada VN: pakai nada bawaan seperti semula.
+  voicePlayer.pause();
   const duration = playTune(p);
   eqTimer = setTimeout(() => $(".eq")?.classList.remove("on"), duration + 300);
 }
@@ -314,6 +375,7 @@ function openDetail(p) {
 function closeDetail() {
   modal.classList.remove("show");
   clearTimeout(eqTimer);
+  stopVoice();
 }
 
 /* ---------- Ulasan lewat email ---------- */
