@@ -9,7 +9,7 @@ const PEOPLE = [
   { name: "Setiaman Gulo", date: "2005-09-11", links: [ig("tiaman_11"), tt("setiamangulo"), wa("6282147532297")] },
   { name: "Imelda Rensis Wenas Zebua", date: "2005-08-20", links: [ig("rensis_zebua"), wa("6282213909353")] },
   { name: "Nanda Priscylla Cahya Sandroto", date: "2006-09-16", links: [ig("nndpriscyllaaa_"), wa("6285133235962")] },
-  { name: "Eka Putra Aman Waruwu", date: "2005-09-05", links: [ig("ek_w05"), tt("eka_waruwu"), wa("6281927523127")] },
+  { name: "Eka Putra Aman Waruwu", date: "2005-09-05", links: [ig("ek_aw05"), tt("eka_waruwu"), wa("6281927523127")] },
   { name: "Imelda Gulo", date: "2006-05-31", links: [ig("imel_da_gulo"), tt("imelda_gulo"), wa("6285373695164")] },
   { name: "Katarina Windy Cindiani Waruwu", date: "2006-08-11", links: [ig("katarinawaruwu8 "), tt("wind_667"), wa("6282326559640")] },
   { name: "Citra Cahyanti Gulo", date: "2006-09-22", links: [ig("ccgll0"), wa("6282259303383")] },
