@@ -391,7 +391,7 @@ function openFeedback() {
       <label>Nama
         <input type="text" id="fbName" maxlength="60" autocomplete="name" required>
       </label>
-      <div class="fb-label">Penilaian</div>
+      <div class="fb-label">Penilaian (opsional)</div>
       <div class="stars" id="stars">
         ${[1, 2, 3, 4, 5].map((n) => `<button type="button" data-v="${n}" aria-label="${n} bintang">★</button>`).join("")}
       </div>
