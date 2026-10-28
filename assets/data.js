@@ -15,7 +15,7 @@ const PEOPLE = [
   { name: "Citra Cahyanti Gulo", date: "2006-09-22", links: [ig("ccgll0"), wa("6282259303383")] },
   { name: "Monika Claudia kristiani ndraha", date: "2006-08-26", links: [ig("cllaukriss_"), tt("claudia.2600"), wa("6285362616454")] },
   { name: "Agustin Kurnia Dohare", date: "2006-08-24", links: [ig("agustynne_"), tt("agustindohare"), wa("6282361738070")] },
-  { name: "10", date: "0000-00-00", links: [ig("username"), tt("username")] },
+  { name: "Christian Lombu", date: "2005-12-28", links: [ig("chr5tt"), tt("chr5tt"), wa("6285282660504")] },
   { name: "11", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "12", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "13", date: "0000-00-00", links: [ig("username"), tt("username")] },
