@@ -515,6 +515,6 @@ document.documentElement.classList.add("intro-lock"); // kunci scroll selama int
 buildDials();
 scatterStars();
 fillMonthOptions();
-$("#sub").textContent = `Nǐ hǎo, péngyǒu! artinya ya'ahowu dua.`;
+$("#sub").textContent = `Nǐ hǎo, péngyǒu! artinya ya'ahowu fefu.`;
 renderList();
 renderNextBirthday();
