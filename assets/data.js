@@ -21,7 +21,7 @@ const PEOPLE = [
   { name: "Merlin indah Cristin Zebua", date: "2006-03-28", links: [ig("mic_z28"), tt("mic.z28"), wa("6282252069846")] },
   { name: "Faril kenangan utama lombu", date: "2006-11-03", links: [ig("Farillombu"), wa("6282239111576")] },
   { name: "Melda Suprianti Waruwu", date: "2007-03-14", links: [ig("Melda_s.wrw"), tt("meldawaruwu.14"), wa("6281277740967")] },
-  { name: "16", date: "0000-00-00", links: [ig("username"), tt("username")] },
+  { name: "Kevin Blessman Realdin Ndruru", date: "2006-09-28", links: [ig("Kevin.ndruru"), tt("ndr.vin"), wa("6282250177867")] },
   { name: "17", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "18", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "19", date: "0000-00-00", links: [ig("username"), tt("username")] },
