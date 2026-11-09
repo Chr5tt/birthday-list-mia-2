@@ -34,7 +34,7 @@ const PEOPLE = [
   { name: "Yenimani Halawa", date: "2005-01-12", links: [ig("yenihalawa12"), wa("6281361514807")] },
   { name: "Juwita Hura", date: "2005-10-17", links: [ig("juwii.17")] },
   { name: "Risda Mawarni Waruwu", date: "2006-10-25", links: [ig("rsbluenoireaa_"), tt("rsmrn_")] },
-  { name: "29", date: "0000-00-00", links: [ig("username"), tt("username")] },
+  { name: "Sri Hartati Lombu", date: "2006-03-08", links: [ig("lombu_s2006"), tt("lombsr"), wa("6282285671563")] },
   { name: "30", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "31", date: "0000-00-00", links: [ig("username"), tt("username")] },
   { name: "32", date: "0000-00-00", links: [ig("username"), tt("username")] },
